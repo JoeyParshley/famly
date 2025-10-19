@@ -1,0 +1,54 @@
+# Breakdown of what this does:
+# - PostgreSQL service -
+#   - uses Postgrest 16 Docker image
+#   - pulls credentials and DB name from `.env`
+#   - Maps host port `5432` -> container port `5432`
+#   - persists your data in a Docker volume  (`pgdata`)
+#   - includes --healtchecks-- so Compose knows when its ready
+# - pdAdmin service
+#   - Optional give a web interface
+#   - accessible at: http://localhost:5050
+#   - logs in with credentials from `.env`
+#   - persists  its own config in `pgadmin_data`
+# - Volumes
+#   - `pgdata`: stores actual Postgres files (safe across restarts)
+#   - `psadmin_data
+
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: famly_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: famly_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+  pgadmin_data:

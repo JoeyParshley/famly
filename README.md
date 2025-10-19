@@ -39,5 +39,4 @@ Famly brings clarity and collaboration to personal and household finance:
 
 ---
 
-## 🧩 Repository Layout
-
+## 🧩 Repository Layout\
