@@ -1,12 +1,11 @@
 # Development Process
 Notes for what the steps entail.
 
-## 1
+## 0 Add initial schema via Flyway
 
-## 2
+## 1 Add User entity & repository
 
-## 3 Password encoder bean (BCrypt)
-created the file
+## 2 Password encoder bean (BCrypt)
 `backend/src/main/java/com/famly/backend/config/PasswordConfig.java`
 ```java
 package com.famly.backend.config;
@@ -57,6 +56,6 @@ encoder.encode(req.password())
 encoder.matches(req.password(), storedHash)
 ```
 4. If true -> success; else 401 Unauthorized
-## 4
+## 3 
 
-## 5 
+## 4 

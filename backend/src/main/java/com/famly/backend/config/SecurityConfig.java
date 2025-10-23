@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // allow your health endpoint to be public
-                        .requestMatchers("/api/health").permitAll()
+                        .requestMatchers("/api/health", "/api/auth/**").permitAll()
                         // you can add others here later
                         .anyRequest().permitAll()
                 )
