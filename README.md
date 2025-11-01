@@ -5,6 +5,10 @@
 Famly is a modern full-stack **household budgeting and debt management** application built with **Spring Boot**, **React**, and **PostgreSQL**.  
 It helps families track budgets, connect to financial institutions, and forecast debt payoff dates — all with a sleek, startup-style UI powered by **MUI**, **React Hook Form**, and **TanStack Query/Table**.
 
+## 🗂 Project Board
+Track progress and milestones on GitHub Projects:  
+👉 [Famly Roadmap](https://github.com/<your-username>/famly/projects)
+
 ---
 
 ## 🧭 Project Overview
