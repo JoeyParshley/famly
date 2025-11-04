@@ -14,18 +14,25 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 **Objective:** Prepare environment and repo.
 
 ### ✅ Tasks
-- [ ] Create GitHub repo `famly`
-- [ ] Set up local directory structure:
+- [x] Create GitHub repo `famly`
+- [x] Set up local directory structure:
   ```
   famly/
     ├── backend/
     ├── frontend/
     ├── infra/
     ├── docs/
+    ├── .github/
+    | └── workflows/
+    ├── .gitignore
+    ├── README.md
+    └── LICENSE
+
+    
   ```
-- [ ] Add `.gitignore` for Java, Node, Docker
-- [ ] Initialize `README.md` with project overview
-- [ ] Create a new GitHub project board for tracking tasks
+- [x] Add `.gitignore` for Java, Node, Docker
+- [x] Initialize `README.md` with project overview
+- [x] Create a new GitHub project board for tracking tasks
 
 ### 🧩 Notes
 - Decide on Java version (recommend 21)
