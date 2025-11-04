@@ -47,17 +47,17 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 **Objective:** Get your database + environment running.
 
 ### ✅ Tasks
-- [ ] Create `infra/docker-compose.yml`
+- [x] Create `infra/docker-compose.yml`
     - Postgres
     - pgAdmin
-- [ ] Add `.env` file (POSTGRES_DB, USER, PASSWORD)
-- [ ] Test with:
+- [x] Add `.env` file (POSTGRES_DB, USER, PASSWORD)
+- [x] Test with:
   ```bash
   docker compose up -d
   docker exec -it famly_db psql -U famly -d famly -c "select 1;"
   ```
-- [ ] Connect pgAdmin to verify DB visibility
-- [ ] Commit as `infra(db): set up Postgres + pgAdmin with Docker Compose`
+- [x] Connect pgAdmin to verify DB visibility
+- [x] Commit as `infra(db): set up Postgres + pgAdmin with Docker Compose`
 
 ### 🧩 Notes
 - Keep Flyway migrations under `backend/src/main/resources/db/migration`
