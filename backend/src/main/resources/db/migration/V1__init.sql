@@ -1,3 +1,6 @@
+-- Enable UUID generation id not already enabled
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
@@ -35,4 +38,34 @@ CREATE TABLE transactions (
     occurred_at DATE NOT NULL,
     created_at TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE assets (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    value NUMERIC NOT NULL,
+    household_id UUID NOT NULL REFERENCES households(id),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE debts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    amount NUMERIC NOT NULL,
+    interest_rate NUMERIC,
+    minimum_payment NUMERIC,
+    due_date DATE,
+    household_id UUID NOT NULL REFERENCES households(id),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE budgets (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    category TEXT NOT NULL,
+    amount NUMERIC NOT NULL,
+    start_date DATE NOT NULL ,
+    end_date DATE,
+    household_id UUID NOT NULL REFERENCES households(id),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
 
