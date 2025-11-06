@@ -47,4 +47,20 @@ Migrations can be verified that they have been run by:
 - Flyway does not reverse migrations; if you delete a migration file or change its version / content after its been run, it will cause problems
 - Always test migrations locally in Docker before pushing
 
+## Making sure Spring Boot is configured to auto-run Flyway migrations on startup
+- This usually true by default but check `application.properties` or `application.yml`
+
+```properties
+# src/main/resources/applications.properties
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+```
+
+```yaml
+spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+```
+
 
