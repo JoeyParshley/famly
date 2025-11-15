@@ -71,11 +71,11 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 **Objective:** Create a working Spring Boot API connected to Postgres.
 
 ### ✅ Tasks
-- [ ] Generate a Spring Boot project (`spring init` or start.spring.io)
+- [x] Generate a Spring Boot project (`spring init` or start.spring.io)
     - Dependencies: `web`, `data-jpa`, `postgresql`, `flyway`, `security`, `validation`
-- [ ] Configure `application.yml`
-- [ ] Add `V1__init.sql` migration
-- [ ] Verify Flyway runs and tables appear in DB
+- [x] Configure `application.yml`
+- [x] Add `V1__init.sql` migration
+- [x] Verify Flyway runs and tables appear in DB
 - [ ] Add `/api/health` endpoint
 - [ ] Add `SecurityConfig` to permit `/api/health`
 - [ ] Commit: `feat(api): add /api/health endpoint`
