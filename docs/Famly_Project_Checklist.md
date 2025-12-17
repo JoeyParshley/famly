@@ -3,9 +3,11 @@
 > https://github.com/users/JoeyParshley/projects/1
 
 **Goal:** Build a full-stack household budgeting app (Famly) using  
-🧩 Spring Boot + PostgreSQL (backend)  
+🧩 **NestJS (Node.js)** + PostgreSQL (backend)  
 ⚛️ React + MUI + TanStack Query/Table + React Hook Form (frontend)  
 🔐 with secure user auth, bank/debt integration stubs, and predictive features.
+
+> **Note:** This project was migrated from Spring Boot to NestJS. See [NODEJS_MIGRATION.md](./NODEJS_MIGRATION.md) for details.
 
 ---
 
@@ -68,21 +70,24 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 ---
 
 ## ⚙️ Phase 2 – Backend Initialization
-**Objective:** Create a working Spring Boot API connected to Postgres.
+**Objective:** Create a working NestJS API connected to Postgres.
 
 ### ✅ Tasks
-- [x] Generate a Spring Boot project (`spring init` or start.spring.io)
-    - Dependencies: `web`, `data-jpa`, `postgresql`, `flyway`, `security`, `validation`
-- [x] Configure `application.yml`
-- [x] Add `V1__init.sql` migration
-- [x] Verify Flyway runs and tables appear in DB
-- [ ] Add `/api/health` endpoint
-- [ ] Add `SecurityConfig` to permit `/api/health`
-- [ ] Commit: `feat(api): add /api/health endpoint`
+- [x] Generate NestJS project (`nest new`)
+    - Dependencies: `@nestjs/typeorm`, `@nestjs/config`, `pg`, `typeorm`
+- [x] Configure TypeORM with PostgreSQL
+- [x] Add `V1__init.sql` migration (existing from Spring Boot setup)
+- [x] Verify database connection and tables exist
+- [x] Add `/api/health` endpoint
+- [x] Create TypeORM entities matching database schema
+- [x] Set up module structure
+- [ ] Add authentication middleware
+- [ ] Commit: `feat(api): complete NestJS backend setup`
 
 ### 🧩 Notes
-- Learn: `@RestController`, `@SpringBootApplication`, JPA, Flyway basics
-- Use `localhost` for DB URL when running locally
+- Learn: `@Controller`, `@Module`, `@Entity`, TypeORM basics
+- Use `db` hostname in Docker, `localhost` when running locally
+- TypeORM entities match existing Flyway migrations
 
 ⏱️ *Estimated time:* 1–2 days
 
@@ -92,19 +97,20 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 **Objective:** Secure the backend and support user registration/login.
 
 ### ✅ Tasks
-- [ ] Create `User` entity + `UserRepository`
-- [ ] Add `PasswordEncoder` bean (BCrypt)
-- [ ] Create `/api/auth/register` and `/api/auth/login`
-- [ ] Add `AuthController` + DTOs (`LoginRequest`, `RegisterRequest`, etc.)
-- [ ] Issue JWT tokens on login using JJWT
-- [ ] Add `JwtAuthFilter` + update `SecurityConfig`
+- [x] Create `User` entity (TypeORM) - ✅ Already exists
+- [ ] Add password hashing (bcrypt)
+- [ ] Create `/api/auth/register` and `/api/auth/login` endpoints
+- [ ] Add `AuthController` + DTOs (`LoginDto`, `RegisterDto`, etc.)
+- [ ] Issue JWT tokens on login using `@nestjs/jwt`
+- [ ] Add JWT guard + strategy using `@nestjs/passport`
 - [ ] Add protected endpoint `/api/me`
 - [ ] Test with curl (no JWT → 401, JWT → 200)
 - [ ] Commit: `feat(auth): add JWT authentication and /api/me`
 
 ### 🧩 Notes
-- Learn: Spring Security filter chain, JWT basics, BCrypt
+- Learn: NestJS guards, Passport strategies, JWT basics, bcrypt
 - Use Postman or Curl to test token flow
+- Similar concepts to Spring Security but NestJS implementation
 
 ⏱️ *Estimated time:* 2–3 days
 
@@ -121,15 +127,18 @@ _(Pre-Development: establishes repo + workflow before coding begins)_
 - [ ] `BudgetRules`
 
 ### ✅ Tasks
-- [ ] Add Flyway `V2__core_tables.sql`
-- [ ] Create entity + repository for each
+- [x] Database schema already exists (V1__init.sql) - ✅ Complete
+- [x] Create TypeORM entities for all core models - ✅ Complete
+- [ ] Create services and controllers for each entity
 - [ ] Add CRUD endpoints for Accounts
 - [ ] Add `/api/transactions` read endpoint (paginated)
+- [ ] Use DTOs to decouple entity from JSON payload
 - [ ] Commit: `feat(api): add core domain models and CRUD endpoints`
 
 ### 🧩 Notes
 - Use DTOs to decouple entity from JSON payload
-- Learn pagination with Spring Data `Pageable`
+- Learn pagination with TypeORM `take` and `skip`
+- Use `class-validator` for input validation
 
 ⏱️ *Estimated time:* 3–5 days
 
