@@ -13,7 +13,6 @@
 # - Volumes
 #   - `pgdata`: stores actual Postgres files (safe across restarts)
 #   - `psadmin_data
-version: "3.8"
 
 services:
   db:
