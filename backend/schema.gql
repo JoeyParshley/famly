@@ -1,0 +1,506 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AccountModel {
+  balance: Float!
+  createdAt: Date!
+  householdId: String!
+  id: ID!
+  institution: String
+  interestRate: Float
+  name: String!
+  type: AccountType!
+}
+
+"""Type of financial account"""
+enum AccountType {
+  CASH
+  CHECKING
+  CREDIT
+  INVESTMENT
+  SAVINGS
+}
+
+type AccountsSummary {
+  netWorth: Float!
+  totalAssets: Float!
+  totalBalance: Float!
+  totalLiabilities: Float!
+}
+
+input AddMemberInput {
+  email: String!
+  householdId: String!
+  role: HouseholdRole!
+}
+
+type AuthPayload {
+  accessToken: String!
+  user: UserModel!
+}
+
+type BalanceTrend {
+  balance: Float!
+  date: String!
+}
+
+input BalanceTrendsInput {
+  days: Int = 30
+  householdId: String!
+}
+
+type BudgetModel {
+  amount: Float!
+  category: String!
+  createdAt: Date!
+  householdId: String!
+  id: ID!
+  period: BudgetPeriod!
+}
+
+"""Time period for budget tracking"""
+enum BudgetPeriod {
+  BIWEEKLY
+  MONTHLY
+  WEEKLY
+  YEARLY
+}
+
+type BudgetSummary {
+  overBudgetCategories: [OverBudgetCategory!]!
+  totalBudget: Float!
+  totalRemaining: Float!
+  totalSpent: Float!
+}
+
+type BudgetWithSpending {
+  amount: Float!
+  category: String!
+  createdAt: Date!
+  householdId: String!
+  id: ID!
+  percentUsed: Float!
+  period: BudgetPeriod!
+  remaining: Float!
+  spent: Float!
+}
+
+input CreateAccountInput {
+  balance: Float
+  householdId: String!
+  institution: String
+  interestRate: Float
+  name: String!
+  type: AccountType!
+}
+
+input CreateBudgetInput {
+  amount: Float!
+  category: String!
+  householdId: String!
+  period: BudgetPeriod = MONTHLY
+}
+
+input CreateDebtInput {
+  amount: Float!
+  householdId: String!
+  interestRate: Float
+  minimumPayment: Float
+  name: String!
+  paymentDueDay: Int
+  type: DebtType!
+}
+
+input CreateHouseholdInput {
+  name: String!
+}
+
+input CreatePaydayInput {
+  amount: Float!
+  frequency: PaydayFrequency!
+  householdId: String!
+  name: String!
+  nextDate: String!
+}
+
+input CreateTransactionInput {
+  accountId: String!
+  amount: Float!
+  category: String!
+  description: String
+  occurredOn: String!
+}
+
+type DailyProjection {
+  balance: Float!
+  date: String!
+  isPayday: Boolean!
+  paydayName: String
+}
+
+type DashboardSummary {
+  monthlyExpenses: Float!
+  monthlyIncome: Float!
+  savingsRate: Float!
+  topCategories: [TopCategory!]!
+  totalBalance: Float!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type DebtModel {
+  amount: Float!
+  createdAt: Date!
+  householdId: String!
+  id: ID!
+  interestRate: Float
+  minimumPayment: Float
+  name: String!
+  paymentDueDay: Int
+  type: DebtType!
+}
+
+type DebtPayoffResult {
+  debtName: String!
+  interestRate: Float!
+  monthlyPayments: [MonthlyPayment!]!
+  monthsToPayoff: Int!
+  originalBalance: Float!
+  payoffDate: Date!
+  totalInterestPaid: Float!
+  totalPaid: Float!
+}
+
+type DebtSummary {
+  debtCount: Int!
+  highestInterestRate: Float
+  lowestBalance: Float
+  totalDebt: Float!
+  totalMinimumPayment: Float!
+}
+
+"""Type of debt"""
+enum DebtType {
+  AUTO_LOAN
+  CREDIT_CARD
+  MEDICAL
+  MORTGAGE
+  OTHER
+  PERSONAL_LOAN
+  STUDENT_LOAN
+}
+
+input DemoLoginInput {
+  email: String!
+}
+
+type DemoUserModel {
+  description: String
+  email: String!
+  name: String!
+  role: HouseholdRole!
+}
+
+type HouseholdMemberModel {
+  createdAt: Date!
+  id: ID!
+  role: HouseholdRole!
+  user: UserModel!
+}
+
+type HouseholdModel {
+  accounts: [AccountModel!]!
+  createdAt: Date!
+  id: ID!
+  members: [HouseholdMemberModel!]
+  name: String!
+}
+
+"""The role of a member in a household"""
+enum HouseholdRole {
+  ADMIN
+  EDIT
+  VIEW
+}
+
+type IncomeExpenseTrend {
+  expenses: Float!
+  income: Float!
+  month: String!
+  net: Float!
+}
+
+input IncomeExpenseTrendsInput {
+  householdId: String!
+  months: Int = 6
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type MonthlyPayment {
+  debtName: String!
+  interest: Float!
+  month: Int!
+  payment: Float!
+  principal: Float!
+  remainingBalance: Float!
+}
+
+type Mutation {
+  addMember(input: AddMemberInput!): HouseholdMemberModel!
+  createAccount(input: CreateAccountInput!): AccountModel!
+  createBudget(input: CreateBudgetInput!): BudgetModel!
+  createDebt(input: CreateDebtInput!): DebtModel!
+  createHousehold(input: CreateHouseholdInput!): HouseholdModel!
+  createPayday(input: CreatePaydayInput!): PaydayModel!
+  createTransaction(householdId: ID!, input: CreateTransactionInput!): TransactionModel!
+  deleteAccount(householdId: ID!, id: ID!): Boolean!
+  deleteBudget(householdId: ID!, id: ID!): Boolean!
+  deleteDebt(householdId: ID!, id: ID!): Boolean!
+  deleteHousehold(id: ID!): Boolean!
+  deletePayday(householdId: ID!, id: ID!): Boolean!
+  deleteTransaction(householdId: ID!, id: ID!): Boolean!
+  demoLogin(input: DemoLoginInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  removeMember(input: RemoveMemberInput!): Boolean!
+  updateAccount(householdId: ID!, id: ID!, input: UpdateAccountInput!): AccountModel!
+  updateBudget(householdId: ID!, id: ID!, input: UpdateBudgetInput!): BudgetModel!
+  updateDebt(householdId: ID!, id: ID!, input: UpdateDebtInput!): DebtModel!
+  updateHousehold(id: ID!, input: UpdateHouseholdInput!): HouseholdModel!
+  updateMemberRole(input: UpdateMemberRoleInput!): HouseholdMemberModel!
+  updatePreferences(input: UpdatePreferencesInput!): UserPreferenceModel!
+  updateTransaction(householdId: ID!, id: ID!, input: UpdateTransactionInput!): TransactionModel!
+}
+
+type OverBudgetCategory {
+  budget: Float!
+  category: String!
+  overage: Float!
+  spent: Float!
+}
+
+"""Frequency of payday"""
+enum PaydayFrequency {
+  BIWEEKLY
+  MONTHLY
+  WEEKLY
+}
+
+type PaydayModel {
+  amount: Float!
+  createdAt: Date!
+  frequency: PaydayFrequency!
+  householdId: String!
+  id: ID!
+  name: String!
+  nextDate: Date!
+}
+
+input PayoffInput {
+  extraMonthlyPayment: Float = 0
+  householdId: String!
+  strategy: PayoffStrategy = AVALANCHE
+}
+
+type PayoffScenario {
+  debtFreeDate: Date!
+  debts: [DebtPayoffResult!]!
+  extraMonthlyPayment: Float!
+  strategy: PayoffStrategy!
+  totalInterestPaid: Float!
+  totalMonths: Int!
+  totalPaid: Float!
+}
+
+"""Strategy for debt payoff calculation"""
+enum PayoffStrategy {
+  AVALANCHE
+  SNOWBALL
+}
+
+input PurchaseImpactInput {
+  accountId: String!
+  amount: Float!
+}
+
+type PurchaseImpactResult {
+  alertThreshold: Float!
+  balanceAfterPurchase: Float!
+  belowThreshold: Boolean!
+  currentBalance: Float!
+  daysUntilRecovery: Int
+  nextPayday: Date
+  projections: [DailyProjection!]!
+  purchaseAmount: Float!
+  recoveryDate: Date
+}
+
+type Query {
+  account(householdId: ID!, id: ID!): AccountModel!
+  accounts(householdId: ID!): [AccountModel!]!
+  accountsSummary(householdId: ID!): AccountsSummary!
+  balanceTrends(input: BalanceTrendsInput!): [BalanceTrend!]!
+  budget(householdId: ID!, id: ID!): BudgetModel!
+  budgetSummary(householdId: ID!): BudgetSummary!
+  budgets(householdId: ID!): [BudgetModel!]!
+  budgetsWithSpending(endDate: String, householdId: ID!, startDate: String): [BudgetWithSpending!]!
+  compareStrategies(extraMonthlyPayment: Float = 0, householdId: ID!): StrategyComparison!
+  dashboardSummary(householdId: ID!): DashboardSummary!
+  debt(householdId: ID!, id: ID!): DebtModel!
+  debtPayoffScenario(input: PayoffInput!): PayoffScenario!
+  debtSummary(householdId: ID!): DebtSummary!
+  debts(householdId: ID!): [DebtModel!]!
+  demoUsers: [DemoUserModel!]!
+  household(id: ID!): HouseholdModel!
+  households: [HouseholdModel!]!
+  incomeExpenseTrends(input: IncomeExpenseTrendsInput!): [IncomeExpenseTrend!]!
+  me: UserModel!
+  paydays(householdId: ID!): [PaydayModel!]!
+  preferences: UserPreferenceModel!
+  purchaseImpact(householdId: ID!, input: PurchaseImpactInput!): PurchaseImpactResult!
+  recentTransactions(householdId: ID!, limit: Int = 10): [TransactionModel!]!
+  spendingByCategory(input: SpendingByCategoryInput!): [SpendingByCategory!]!
+  transaction(householdId: ID!, id: ID!): TransactionModel!
+  transactionCategories(householdId: ID!): [String!]!
+  transactions(filter: TransactionFilterInput!): TransactionConnection!
+}
+
+input RegisterInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input RemoveMemberInput {
+  householdId: String!
+  memberId: String!
+}
+
+type SpendingByCategory {
+  amount: Float!
+  category: String!
+  percentage: Float!
+  transactionCount: Int!
+}
+
+input SpendingByCategoryInput {
+  endDate: String
+  householdId: String!
+  startDate: String
+}
+
+type StrategyComparison {
+  avalanche: PayoffScenario!
+  interestSaved: Float!
+  monthsDifference: Int!
+  recommendedStrategy: String!
+  snowball: PayoffScenario!
+}
+
+"""UI theme preference"""
+enum Theme {
+  DARK
+  LIGHT
+}
+
+type TopCategory {
+  amount: Float!
+  category: String!
+}
+
+type TransactionConnection {
+  hasMore: Boolean!
+  items: [TransactionModel!]!
+  limit: Int!
+  offset: Int!
+  total: Int!
+}
+
+input TransactionFilterInput {
+  accountId: String
+  category: String
+  endDate: String
+  householdId: String!
+  limit: Int = 50
+  offset: Int = 0
+  startDate: String
+}
+
+type TransactionModel {
+  accountId: String!
+  amount: Float!
+  category: String!
+  createdAt: Date!
+  description: String
+  id: ID!
+  occurredOn: Date!
+}
+
+input UpdateAccountInput {
+  balance: Float
+  institution: String
+  interestRate: Float
+  name: String
+  type: AccountType
+}
+
+input UpdateBudgetInput {
+  amount: Float
+  category: String
+  period: BudgetPeriod
+}
+
+input UpdateDebtInput {
+  amount: Float
+  interestRate: Float
+  minimumPayment: Float
+  name: String
+  paymentDueDay: Int
+  type: DebtType
+}
+
+input UpdateHouseholdInput {
+  name: String!
+}
+
+input UpdateMemberRoleInput {
+  householdId: String!
+  memberId: String!
+  role: HouseholdRole!
+}
+
+input UpdatePreferencesInput {
+  balanceAlertThreshold: Float
+  theme: Theme
+}
+
+input UpdateTransactionInput {
+  accountId: String
+  amount: Float
+  category: String
+  description: String
+  occurredOn: String
+}
+
+type UserModel {
+  createdAt: Date!
+  email: String!
+  id: ID!
+  isDemo: Boolean
+  name: String!
+}
+
+type UserPreferenceModel {
+  balanceAlertThreshold: Float!
+  createdAt: Date!
+  id: ID!
+  theme: Theme!
+  updatedAt: Date!
+  userId: String!
+}

@@ -4,6 +4,16 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { HouseholdsModule } from './households/households.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { BudgetsModule } from './budgets/budgets.module';
+import { DebtsModule } from './debts/debts.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { PreferencesModule } from './preferences/preferences.module';
+import { DemoModule } from './demo/demo.module';
+import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   imports: [
@@ -27,6 +37,16 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
     }),
     AuthModule,
+    CommonModule,
+    HouseholdsModule,
+    AccountsModule,
+    TransactionsModule,
+    BudgetsModule,
+    DebtsModule,
+    AnalyticsModule,
+    PreferencesModule,
+    DemoModule,
+    GraphqlModule,
   ],
   controllers: [AppController],
   providers: [AppService],
