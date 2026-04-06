@@ -1,0 +1,23 @@
+# Preferences Fragments
+fragment UserPreferenceFields on UserPreferenceModel {
+  id
+  userId
+  theme
+  balanceAlertThreshold
+  createdAt
+  updatedAt
+}
+
+# Preferences Queries
+query Preferences {
+  preferences {
+    ...UserPreferenceFields
+  }
+}
+
+# Preferences Mutations
+mutation UpdatePreferences($input: UpdatePreferencesInput!) {
+  updatePreferences(input: $input) {
+    ...UserPreferenceFields
+  }
+}

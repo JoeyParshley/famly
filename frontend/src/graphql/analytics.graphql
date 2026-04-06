@@ -1,0 +1,105 @@
+# Analytics Fragments
+fragment SpendingByCategoryFields on SpendingByCategory {
+  category
+  amount
+  percentage
+  transactionCount
+}
+
+fragment BalanceTrendFields on BalanceTrend {
+  date
+  balance
+}
+
+fragment IncomeExpenseTrendFields on IncomeExpenseTrend {
+  month
+  income
+  expenses
+  net
+}
+
+fragment DashboardSummaryFields on DashboardSummary {
+  totalBalance
+  monthlyIncome
+  monthlyExpenses
+  savingsRate
+  topCategories {
+    category
+    amount
+  }
+}
+
+fragment PaydayFields on PaydayModel {
+  id
+  householdId
+  name
+  amount
+  frequency
+  nextDate
+  createdAt
+}
+
+fragment PurchaseImpactFields on PurchaseImpactResult {
+  currentBalance
+  purchaseAmount
+  balanceAfterPurchase
+  alertThreshold
+  belowThreshold
+  nextPayday
+  recoveryDate
+  daysUntilRecovery
+  projections {
+    date
+    balance
+    isPayday
+    paydayName
+  }
+}
+
+# Analytics Queries
+query SpendingByCategory($input: SpendingByCategoryInput!) {
+  spendingByCategory(input: $input) {
+    ...SpendingByCategoryFields
+  }
+}
+
+query BalanceTrends($input: BalanceTrendsInput!) {
+  balanceTrends(input: $input) {
+    ...BalanceTrendFields
+  }
+}
+
+query IncomeExpenseTrends($input: IncomeExpenseTrendsInput!) {
+  incomeExpenseTrends(input: $input) {
+    ...IncomeExpenseTrendFields
+  }
+}
+
+query PurchaseImpact($householdId: ID!, $input: PurchaseImpactInput!) {
+  purchaseImpact(householdId: $householdId, input: $input) {
+    ...PurchaseImpactFields
+  }
+}
+
+query DashboardSummary($householdId: ID!) {
+  dashboardSummary(householdId: $householdId) {
+    ...DashboardSummaryFields
+  }
+}
+
+query Paydays($householdId: ID!) {
+  paydays(householdId: $householdId) {
+    ...PaydayFields
+  }
+}
+
+# Analytics Mutations
+mutation CreatePayday($input: CreatePaydayInput!) {
+  createPayday(input: $input) {
+    ...PaydayFields
+  }
+}
+
+mutation DeletePayday($householdId: ID!, $id: ID!) {
+  deletePayday(householdId: $householdId, id: $id)
+}

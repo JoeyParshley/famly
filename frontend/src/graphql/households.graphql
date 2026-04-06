@@ -1,0 +1,77 @@
+# Household Fragments
+fragment HouseholdMemberFields on HouseholdMemberModel {
+  id
+  user {
+    id
+    email
+    name
+    createdAt
+    isDemo
+  }
+  role
+  createdAt
+}
+
+fragment HouseholdFields on HouseholdModel {
+  id
+  name
+  createdAt
+  members {
+    ...HouseholdMemberFields
+  }
+}
+
+# Household Queries
+query Households {
+  households {
+    ...HouseholdFields
+  }
+}
+
+query Household($id: ID!) {
+  household(id: $id) {
+    ...HouseholdFields
+    accounts {
+      id
+      name
+      type
+      balance
+      interestRate
+      institution
+      createdAt
+    }
+  }
+}
+
+# Household Mutations
+mutation CreateHousehold($input: CreateHouseholdInput!) {
+  createHousehold(input: $input) {
+    ...HouseholdFields
+  }
+}
+
+mutation UpdateHousehold($id: ID!, $input: UpdateHouseholdInput!) {
+  updateHousehold(id: $id, input: $input) {
+    ...HouseholdFields
+  }
+}
+
+mutation DeleteHousehold($id: ID!) {
+  deleteHousehold(id: $id)
+}
+
+mutation AddMember($input: AddMemberInput!) {
+  addMember(input: $input) {
+    ...HouseholdMemberFields
+  }
+}
+
+mutation UpdateMemberRole($input: UpdateMemberRoleInput!) {
+  updateMemberRole(input: $input) {
+    ...HouseholdMemberFields
+  }
+}
+
+mutation RemoveMember($input: RemoveMemberInput!) {
+  removeMember(input: $input)
+}

@@ -1,0 +1,59 @@
+# Auth Queries
+query Me {
+  me {
+    id
+    email
+    name
+    createdAt
+    isDemo
+  }
+}
+
+query DemoUsers {
+  demoUsers {
+    email
+    name
+    role
+    description
+  }
+}
+
+# Auth Mutations
+mutation Register($input: RegisterInput!) {
+  register(input: $input) {
+    accessToken
+    user {
+      id
+      email
+      name
+      createdAt
+      isDemo
+    }
+  }
+}
+
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    accessToken
+    user {
+      id
+      email
+      name
+      createdAt
+      isDemo
+    }
+  }
+}
+
+mutation DemoLogin($input: DemoLoginInput!) {
+  demoLogin(input: $input) {
+    accessToken
+    user {
+      id
+      email
+      name
+      createdAt
+      isDemo
+    }
+  }
+}

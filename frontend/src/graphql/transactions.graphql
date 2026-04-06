@@ -1,0 +1,56 @@
+# Transaction Fragments
+fragment TransactionFields on TransactionModel {
+  id
+  accountId
+  amount
+  category
+  description
+  occurredOn
+  createdAt
+}
+
+# Transaction Queries
+query Transactions($filter: TransactionFilterInput!) {
+  transactions(filter: $filter) {
+    items {
+      ...TransactionFields
+    }
+    total
+    limit
+    offset
+    hasMore
+  }
+}
+
+query Transaction($householdId: ID!, $id: ID!) {
+  transaction(householdId: $householdId, id: $id) {
+    ...TransactionFields
+  }
+}
+
+query TransactionCategories($householdId: ID!) {
+  transactionCategories(householdId: $householdId)
+}
+
+query RecentTransactions($householdId: ID!, $limit: Int) {
+  recentTransactions(householdId: $householdId, limit: $limit) {
+    ...TransactionFields
+  }
+}
+
+# Transaction Mutations
+mutation CreateTransaction($householdId: ID!, $input: CreateTransactionInput!) {
+  createTransaction(householdId: $householdId, input: $input) {
+    ...TransactionFields
+  }
+}
+
+mutation UpdateTransaction($householdId: ID!, $id: ID!, $input: UpdateTransactionInput!) {
+  updateTransaction(householdId: $householdId, id: $id, input: $input) {
+    ...TransactionFields
+  }
+}
+
+mutation DeleteTransaction($householdId: ID!, $id: ID!) {
+  deleteTransaction(householdId: $householdId, id: $id)
+}

@@ -1,0 +1,71 @@
+# Budget Fragments
+fragment BudgetFields on BudgetModel {
+  id
+  householdId
+  category
+  amount
+  period
+  createdAt
+}
+
+fragment BudgetWithSpendingFields on BudgetWithSpending {
+  id
+  householdId
+  category
+  amount
+  period
+  spent
+  remaining
+  percentUsed
+  createdAt
+}
+
+# Budget Queries
+query Budgets($householdId: ID!) {
+  budgets(householdId: $householdId) {
+    ...BudgetFields
+  }
+}
+
+query Budget($householdId: ID!, $id: ID!) {
+  budget(householdId: $householdId, id: $id) {
+    ...BudgetFields
+  }
+}
+
+query BudgetsWithSpending($householdId: ID!, $startDate: String, $endDate: String) {
+  budgetsWithSpending(householdId: $householdId, startDate: $startDate, endDate: $endDate) {
+    ...BudgetWithSpendingFields
+  }
+}
+
+query BudgetSummary($householdId: ID!) {
+  budgetSummary(householdId: $householdId) {
+    totalBudget
+    totalSpent
+    totalRemaining
+    overBudgetCategories {
+      category
+      budget
+      spent
+      overage
+    }
+  }
+}
+
+# Budget Mutations
+mutation CreateBudget($input: CreateBudgetInput!) {
+  createBudget(input: $input) {
+    ...BudgetFields
+  }
+}
+
+mutation UpdateBudget($householdId: ID!, $id: ID!, $input: UpdateBudgetInput!) {
+  updateBudget(householdId: $householdId, id: $id, input: $input) {
+    ...BudgetFields
+  }
+}
+
+mutation DeleteBudget($householdId: ID!, $id: ID!) {
+  deleteBudget(householdId: $householdId, id: $id)
+}

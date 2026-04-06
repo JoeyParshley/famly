@@ -1,0 +1,98 @@
+# Debt Fragments
+fragment DebtFields on DebtModel {
+  id
+  householdId
+  name
+  type
+  amount
+  interestRate
+  minimumPayment
+  paymentDueDay
+  createdAt
+}
+
+fragment PayoffScenarioFields on PayoffScenario {
+  strategy
+  extraMonthlyPayment
+  totalMonths
+  totalInterestPaid
+  totalPaid
+  debtFreeDate
+  debts {
+    debtName
+    originalBalance
+    interestRate
+    monthsToPayoff
+    totalInterestPaid
+    totalPaid
+    payoffDate
+    monthlyPayments {
+      month
+      debtName
+      payment
+      principal
+      interest
+      remainingBalance
+    }
+  }
+}
+
+# Debt Queries
+query Debts($householdId: ID!) {
+  debts(householdId: $householdId) {
+    ...DebtFields
+  }
+}
+
+query Debt($householdId: ID!, $id: ID!) {
+  debt(householdId: $householdId, id: $id) {
+    ...DebtFields
+  }
+}
+
+query DebtSummary($householdId: ID!) {
+  debtSummary(householdId: $householdId) {
+    totalDebt
+    totalMinimumPayment
+    highestInterestRate
+    lowestBalance
+    debtCount
+  }
+}
+
+query DebtPayoffScenario($input: PayoffInput!) {
+  debtPayoffScenario(input: $input) {
+    ...PayoffScenarioFields
+  }
+}
+
+query CompareStrategies($householdId: ID!, $extraMonthlyPayment: Float) {
+  compareStrategies(householdId: $householdId, extraMonthlyPayment: $extraMonthlyPayment) {
+    avalanche {
+      ...PayoffScenarioFields
+    }
+    snowball {
+      ...PayoffScenarioFields
+    }
+    interestSaved
+    monthsDifference
+    recommendedStrategy
+  }
+}
+
+# Debt Mutations
+mutation CreateDebt($input: CreateDebtInput!) {
+  createDebt(input: $input) {
+    ...DebtFields
+  }
+}
+
+mutation UpdateDebt($householdId: ID!, $id: ID!, $input: UpdateDebtInput!) {
+  updateDebt(householdId: $householdId, id: $id, input: $input) {
+    ...DebtFields
+  }
+}
+
+mutation DeleteDebt($householdId: ID!, $id: ID!) {
+  deleteDebt(householdId: $householdId, id: $id)
+}

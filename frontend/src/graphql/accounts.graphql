@@ -1,0 +1,50 @@
+# Account Fragments
+fragment AccountFields on AccountModel {
+  id
+  householdId
+  name
+  type
+  balance
+  interestRate
+  institution
+  createdAt
+}
+
+# Account Queries
+query Accounts($householdId: ID!) {
+  accounts(householdId: $householdId) {
+    ...AccountFields
+  }
+}
+
+query Account($householdId: ID!, $id: ID!) {
+  account(householdId: $householdId, id: $id) {
+    ...AccountFields
+  }
+}
+
+query AccountsSummary($householdId: ID!) {
+  accountsSummary(householdId: $householdId) {
+    totalBalance
+    totalAssets
+    totalLiabilities
+    netWorth
+  }
+}
+
+# Account Mutations
+mutation CreateAccount($input: CreateAccountInput!) {
+  createAccount(input: $input) {
+    ...AccountFields
+  }
+}
+
+mutation UpdateAccount($householdId: ID!, $id: ID!, $input: UpdateAccountInput!) {
+  updateAccount(householdId: $householdId, id: $id, input: $input) {
+    ...AccountFields
+  }
+}
+
+mutation DeleteAccount($householdId: ID!, $id: ID!) {
+  deleteAccount(householdId: $householdId, id: $id)
+}
