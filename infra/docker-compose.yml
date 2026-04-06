@@ -1,18 +1,15 @@
-# Breakdown of what this does:
-# - PostgreSQL service -
-#   - uses Postgrest 16 Docker image
-#   - pulls credentials and DB name from `.env`
-#   - Maps host port `5432` -> container port `5432`
-#   - persists your data in a Docker volume  (`pgdata`)
-#   - includes --healtchecks-- so Compose knows when its ready
-# - pdAdmin service
-#   - Optional give a web interface
-#   - accessible at: http://localhost:5050
-#   - logs in with credentials from `.env`
-#   - persists  its own config in `pgadmin_data`
-# - Volumes
-#   - `pgdata`: stores actual Postgres files (safe across restarts)
-#   - `psadmin_data
+# Famly Budget App - Docker Compose Configuration
+#
+# Services:
+# - db: PostgreSQL 16 database with healthchecks
+# - pgadmin: Web-based database management (http://localhost:5050)
+# - backend: NestJS API server (http://localhost:8080)
+# - frontend: Next.js web app (http://localhost:3000)
+#
+# Usage:
+# - Full stack: docker-compose up
+# - Database only: docker-compose up db
+# - Backend only: docker-compose up db backend
 
 services:
   db:
@@ -55,16 +52,40 @@ services:
   backend:
     build:
       context: ../backend
+      dockerfile: Dockerfile
     container_name: famly_backend
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "8080:3000"
     environment:
+      - NODE_ENV=production
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
+    networks:
+      - famly_net
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+    container_name: famly_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
     networks:
       - famly_net
 
