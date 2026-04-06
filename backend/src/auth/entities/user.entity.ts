@@ -23,4 +23,7 @@ export class User {
 
     @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
     createdAt: Date;
+
+    @Column({ type: 'boolean', name: 'is_demo', default: false })
+    isDemo: boolean;
 }
